@@ -1,0 +1,26 @@
+DirectoryIndex index.html
+RewriteEngine On
+# One canonical host: the API only answers https://xhookahstore.com, so on www the catalogue falls back to 8 placeholders.
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://xhookahstore.com%{REQUEST_URI} [R=301,L,NE]
+# Visible addresses never show a file name: /index.html -> /, /checkout.html -> /checkout.
+# THE_REQUEST checks what the browser asked for, so internal rewrites do not loop.
+RewriteCond %{THE_REQUEST} \s/index\.html[\s?]
+RewriteRule ^index\.html$ / [R=301,L]
+RewriteCond %{THE_REQUEST} \s/checkout\.html[\s?]
+RewriteRule ^checkout\.html$ /checkout [R=301,L]
+# The separate catalogue page is gone; the collection lives on the home page.
+RewriteRule ^catalog\.html$ /#collection [R=301,L,NE]
+RewriteRule ^checkout/?$ checkout.html [L]
+# Route every product URL to one live shell, including old physical product
+# directories left on the host by an earlier upload.
+RewriteRule ^product/([a-z0-9-]+)/index\.html$ /product/$1 [R=301,L,NC]
+RewriteRule ^product/([a-z0-9-]+)/?$ product.html [L,NC,QSA]
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|json|xml)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+</IfModule>

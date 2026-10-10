@@ -1,0 +1,17 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/catalog",
+      "destination": "/#collection",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/product/:slug",
+      "destination": "/product.html"
+    }
+  ]
+}

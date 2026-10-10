@@ -1,0 +1,5 @@
+/index.html  /  301
+/catalog.html  /#collection  301
+/checkout.html  /checkout  301
+/checkout  /checkout.html  200
+/product/:slug  /product.html  200
